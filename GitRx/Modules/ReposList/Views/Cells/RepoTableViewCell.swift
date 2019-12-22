@@ -27,6 +27,7 @@ final class RepoTableViewCell: UITableViewCell {
     lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.numberOfLines = 3
         label.textColor = .lightGray
         return label
     }()
@@ -56,7 +57,7 @@ final class RepoTableViewCell: UITableViewCell {
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = .darkText
         label.textAlignment = .right
         return label
@@ -117,6 +118,7 @@ private extension RepoTableViewCell {
         languageLabel.translatesAutoresizingMaskIntoConstraints = false
         languageLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16).isActive = true
         languageLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 6).isActive = true
+        languageLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
     }
     
     func setupStarsLayout() {
@@ -125,6 +127,7 @@ private extension RepoTableViewCell {
         starsLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 8).isActive = true
         starsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         starsLabel.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor, constant: 0).isActive = true
+        starsLabel.widthAnchor.constraint(equalToConstant: 94).isActive = true
     }
     
     func setupForksLayout() {
@@ -133,6 +136,7 @@ private extension RepoTableViewCell {
         forksLabel.leadingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor, constant: 8).isActive = true
         forksLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         forksLabel.centerYAnchor.constraint(equalTo: descriptionLabel.centerYAnchor, constant: 0).isActive = true
+        forksLabel.widthAnchor.constraint(equalToConstant: 94).isActive = true
     }
     
     func setupDateLayout() {
@@ -141,6 +145,7 @@ private extension RepoTableViewCell {
         dateLabel.leadingAnchor.constraint(equalTo: languageLabel.trailingAnchor, constant: 8).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         dateLabel.bottomAnchor.constraint(equalTo: languageLabel.bottomAnchor, constant: 0).isActive = true
+        dateLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
     }
 
 }
