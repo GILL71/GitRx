@@ -15,7 +15,7 @@ final class HTTPClient {
 
     enum Method: String {
         case search = "search/repositories"
-        case readme = "README"
+        case readme = "readme"
     }
     
     enum ResponseResult {
@@ -41,6 +41,12 @@ final class HTTPClient {
         }
         urlComponents.queryItems = [URLQueryItem(name: "q", value: query)]
         call(with: urlComponents, method: .search, completion: completion)
+    }
+    
+    func readme(for userName: String, repo: String, completion: @escaping(ResponseResult)->Void) {
+        var urlComponents = baseURL
+        urlComponents.path.append("/repos/\(userName)/\(repo)")
+        call(with: urlComponents, method: .readme, completion: completion)
     }
     
     // MARK: - Core function

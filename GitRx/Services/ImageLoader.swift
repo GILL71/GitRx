@@ -24,6 +24,7 @@ final class ImageLoader {
                     onNext(data)
                 }
         }
+        //.disposed(by: disposeBag)
     }
 
 }

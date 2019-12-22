@@ -11,9 +11,13 @@ import Foundation
 struct OwnerResponse: Codable {
     
     let avatarURL: String?
+    let userName: String
+    let htmlURL: String
     
     enum CodingKeys: String, CodingKey {
         case avatarURL = "avatar_url"
+        case userName = "login"
+        case htmlURL = "html_url"
     }
     
 }

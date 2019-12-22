@@ -44,12 +44,7 @@ private extension ReposListViewController {
         setupTableViewBinding()
         setupRefresherBinding()
         setupReposBinding()
-        setupTableViewDelegateBinding()
-    }
-    
-    func setupTableViewDelegateBinding() {
-        contentView.reposTableView.rx.setDelegate(self)
-        .disposed(by: disposeBag)
+        setupSearchBar()
     }
     
     func setupReposBinding() {
@@ -63,6 +58,10 @@ private extension ReposListViewController {
     func setupRefresherBinding() {
         viewModel.isLoading.bind(to: refresher.rx.isRefreshing)
         .disposed(by: disposeBag)
+    }
+    
+    func setupSearchBar() {
+        contentView.searchBar.delegate = self
     }
     
     func setupTableViewBinding() {
@@ -84,6 +83,16 @@ private extension ReposListViewController {
             }
             
         }.disposed(by: disposeBag)
+        
+        Observable
+        .zip(contentView.reposTableView.rx.itemSelected, contentView.reposTableView.rx.modelSelected(RepoResponse.self))
+        .bind { [weak self] indexPath, model in
+            self?.contentView.reposTableView.deselectRow(at: indexPath, animated: true)
+            let vc = RepoViewController(with: model)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+        .disposed(by: disposeBag)
+        
     }
     
 }
@@ -95,9 +104,9 @@ private extension ReposListViewController {
     func setupView() {
         view.backgroundColor = .white
         navigationItem.title = "GitRx"
+        navigationController?.navigationBar.tintColor = .black
         setupTableView()
         setupRefresher()
-        setupSearchBar()
     }
     
     func setupTableView() {
@@ -106,10 +115,6 @@ private extension ReposListViewController {
         contentView.reposTableView.refreshControl = refresher
         contentView.reposTableView.estimatedRowHeight = 105
         contentView.reposTableView.rowHeight = UITableView.automaticDimension
-    }
-    
-    func setupSearchBar() {
-        contentView.searchBar.delegate = self
     }
     
     func setupRefresher() {
@@ -139,16 +144,6 @@ extension ReposListViewController: UISearchBarDelegate {
         searchBar.endEditing(true)
     }
     
-}
-
-// MARK: - UITableViewDelegate
-
-extension ReposListViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-
 }
 
 // MARK: - Helpers
