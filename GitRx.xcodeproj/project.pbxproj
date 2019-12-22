@@ -13,6 +13,7 @@
 		4B32D66D23AFAE2C00D97A58 /* RepoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B32D66C23AFAE2C00D97A58 /* RepoResponse.swift */; };
 		4B32D66F23AFAE4A00D97A58 /* OwnerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B32D66E23AFAE4A00D97A58 /* OwnerResponse.swift */; };
 		4B32D67123AFB7C400D97A58 /* ReposListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B32D67023AFB7C400D97A58 /* ReposListViewModel.swift */; };
+		4B32D67423AFDD1300D97A58 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B32D67323AFDD1300D97A58 /* ImageLoader.swift */; };
 		4B44866A23AE6BD000C89379 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44866923AE6BD000C89379 /* AppDelegate.swift */; };
 		4B44866C23AE6BD000C89379 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B44866B23AE6BD000C89379 /* SceneDelegate.swift */; };
 		4B44867323AE6BDA00C89379 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B44867223AE6BDA00C89379 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 		4B32D66C23AFAE2C00D97A58 /* RepoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoResponse.swift; sourceTree = "<group>"; };
 		4B32D66E23AFAE4A00D97A58 /* OwnerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerResponse.swift; sourceTree = "<group>"; };
 		4B32D67023AFB7C400D97A58 /* ReposListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposListViewModel.swift; sourceTree = "<group>"; };
+		4B32D67323AFDD1300D97A58 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		4B44866623AE6BD000C89379 /* GitRx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitRx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B44866923AE6BD000C89379 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B44866B23AE6BD000C89379 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				4B32D66523AF652300D97A58 /* HTTPClient.swift */,
+				4B32D67323AFDD1300D97A58 /* ImageLoader.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 			files = (
 				4B32D66F23AFAE4A00D97A58 /* OwnerResponse.swift in Sources */,
 				4B44868223AE6E7800C89379 /* RepoViewController.swift in Sources */,
+				4B32D67423AFDD1300D97A58 /* ImageLoader.swift in Sources */,
 				4B32D66B23AFAE0F00D97A58 /* MainResponse.swift in Sources */,
 				4B32D66D23AFAE2C00D97A58 /* RepoResponse.swift in Sources */,
 				4B44866A23AE6BD000C89379 /* AppDelegate.swift in Sources */,

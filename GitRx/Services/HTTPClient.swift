@@ -13,10 +13,15 @@ final class HTTPClient {
     
     // MARK: - Enums
 
-//    enum Method: String {
-//        case search = "search/repositories"
-//        case readme = "README"
-//    }
+    enum Method: String {
+        case search = "search/repositories"
+        case readme = "README"
+    }
+    
+    enum ResponseResult {
+        case success(response: Data)
+        case error(message: String)
+    }
     
     // MARK: - Private properties
     
@@ -27,39 +32,38 @@ final class HTTPClient {
         return components
     }
     
-    func search(with query: String, completion: @escaping(MainResponse)->Void) {
+    // MARK: - Api calls
+    
+    func search(with query: String, completion: @escaping(ResponseResult)->Void) {
         var urlComponents = baseURL
         guard !query.isEmpty else {
             return
         }
         urlComponents.queryItems = [URLQueryItem(name: "q", value: query)]
+        call(with: urlComponents, method: .search, completion: completion)
+    }
+    
+    // MARK: - Core function
+
+    private func call(with urlComponents: URLComponents, method: Method, completion: @escaping(ResponseResult)->Void) {
         guard var url = urlComponents.url else {
             return
         }
-        url.appendPathComponent("search/repositories")
+        url.appendPathComponent(method.rawValue)
         var urlRequest = URLRequest(url: url)
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         let urlsession = URLSession(configuration: .default)
         urlsession.dataTask(with: urlRequest) { (data, response, error) in
-            if let unwrappedError = error {
-                //распространить ошибку
+            if let _ = error {
+                completion(.error(message: "Internal error"))
             }
-            do {
-                let encoded = try JSONDecoder().decode(MainResponse.self, from: data!)
-                print(encoded)
-                completion(encoded)
-            } catch {
-                //распространить ошибку парсинга
-                print(error.localizedDescription)
+            if let unwrappedData = data {
+                completion(.success(response: unwrappedData))
+            } else {
+                completion(.error(message: "Empty data"))
             }
-            print("________")
-            print(response)
-            print("________")
-            print(error)
-            print("________")
         }.resume()
-
     }
-
+    
 }
