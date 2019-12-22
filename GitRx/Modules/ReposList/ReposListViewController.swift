@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class ReposListViewController: UIViewController {
     
@@ -14,7 +16,10 @@ final class ReposListViewController: UIViewController {
     
     private var contentView = ReposListView()
     private let refresher = UIRefreshControl()
-    
+    private let viewModel = ReposListViewModel()
+    private var repos = PublishSubject<[RepoResponse]>()
+    private let disposeBag = DisposeBag()
+
     // MARK: - Lifecycle methods
     
     override func loadView() {
@@ -25,6 +30,33 @@ final class ReposListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupBinding()
+        
+        viewModel
+        .repos
+        .observeOn(MainScheduler.instance)
+        .bind(to: repos)
+        .disposed(by: disposeBag)
+    }
+    
+}
+
+// MARK: - Binding
+
+private extension ReposListViewController {
+    
+    func setupBinding() {
+        repos.bind(to: contentView.reposTableView.rx.items(cellIdentifier: "cell", cellType: RepoTableViewCell.self)) {  (row,repo,cell) in
+            cell.nameLabel.text = repo.name
+            cell.descriptionLabel.text = repo.description
+            cell.languageLabel.text = repo.language ?? "None"
+            cell.forksLabel.text = "Forks: \(repo.forksCount)"
+            cell.starsLabel.text = "Stars: \(repo.starsCount)"
+            cell.dateLabel.text = repo.updateDate
+        }.disposed(by: disposeBag)
+                
+        contentView.reposTableView.rx.setDelegate(self)
+        .disposed(by: disposeBag)
     }
     
 }
@@ -38,14 +70,19 @@ private extension ReposListViewController {
         navigationItem.title = "GitRx"
         setupTableView()
         setupRefresher()
+        setupSearchBar()
     }
     
     func setupTableView() {
-        contentView.reposTableView.delegate = self
-        contentView.reposTableView.dataSource = self
         contentView.reposTableView.register(RepoTableViewCell.self, forCellReuseIdentifier: "cell")
         contentView.reposTableView.tableFooterView = UIView(frame: .zero)
         contentView.reposTableView.addSubview(refresher)
+        contentView.reposTableView.estimatedRowHeight = 105
+        contentView.reposTableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    func setupSearchBar() {
+        contentView.searchBar.delegate = self
     }
     
     func setupRefresher() {
@@ -65,34 +102,24 @@ private extension ReposListViewController {
     
 }
 
+// MARK: - UISearchBarDelegate
+
+extension ReposListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let text = searchBar.text {
+            viewModel.search(with: text)
+        }
+    }
+    
+}
+
 // MARK: - UITableViewDelegate
 
 extension ReposListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-}
-
-// MARK: - UITableViewDataSource
-
-extension ReposListViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? RepoTableViewCell else {
-            return UITableViewCell()
-        }
-        //setup cell
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 82
     }
 
 }
